@@ -13,7 +13,7 @@ token = os.environ['TELEGRAM_TOKEN']
 Tconsumer_key = os.environ['TCONSUMER_KEY']
 Tconsumer_sec = os.environ['TCONSUMER_SEC']
 Taccess_key = os.environ['TACCESS_KEY']
-Taccess_key = os.environ['TACCESS_SEC']
+Taccess_sec = os.environ['TACCESS_SEC']
 
 bot = telebot.TeleBot(token)
 x = bot.get_me()
