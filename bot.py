@@ -22,7 +22,8 @@ crs = ''
 task = {'': ''}
 
 curse_words = ['suck me da', 'Fuck you', 'Bastard', 'Punda', 'Otha', 'Thevdiya', 'Jaya Surya is a bitch', 'Koothi',
-               'Jaya Surya Sindhu', 'Nandlal Kandaraoli', 'Baadu', 'Poolu', 'Puluthi', 'Kandaraoli', 'Soothu', 'Sunni']
+               'Jaya Surya Sindhu', 'Nandlal Kandaraoli', 'Baadu', 'Poolu',
+               'Puluthi', 'Kandaraoli', 'Soothu', 'Sunni', 'Aalu Punda naan dhan kedachana']
 
 
 @bot.message_handler(commands=['curse'])
@@ -30,33 +31,38 @@ def command_words(msg):
     global crs
     crs = msg.text.split()
     if len(crs) > 1:
-        bot.send_message(msg.chat.id, random.choice(curse_words) + ' ' + ' '.join(crs[1:]))
+        bot.send_message(msg.chat.id, random.choice(curse_words) + ' ' + ' '.join(crs[1:]), disable_notification=True)
     else:
-        bot.send_message(msg.chat.id, random.choice(curse_words))
+        bot.send_message(msg.chat.id, random.choice(curse_words), disable_notification=True)
     print(msg.message_id)
     bot.delete_message(msg.chat.id, msg.message_id)
 
 
-@bot.message_handler(commands=['info'])
-def command_info(msg):
-    bot.reply_to(msg, msg.chat)
+# @bot.message_handler(commands=['info'])
+# def command_info(msg):
+#     bot.reply_to(msg, msg.chat)
 
 
-@bot.message_handler(commands=['wholesome','wholesome-update'])
-def command_info(msg):
-        if len(msg.text.split('-'))>1:
-                pre_proc()
-                bot.send_message(msg.chat.id,'updated..')
-        else:
-                url = return_pic()
-                bot.send_photo(msg.chat.id,url)
+@bot.message_handler(commands=['wholesome', 'wholesome-update'])
+  def command_info(msg):	
+    if len(msg.text.split('-'))>1:	
+        pre_proc()
+        bot.send_message(msg.chat.id,'updated..')
+    else:
+        url = return_pic()
+        x = requests.request(url='https://api.quotable.io/random', method='get')
+        bot.send_photo(msg.chat.id, url, caption=x.json()['content'], disable_notification=True)
+
 
 @bot.message_handler(commands=['note'])
 def command_info(msg):
     li = msg.text.split()
     if len(li) > 1:
         task[li[1]] = ' '.join(li[2:])
-    bot.reply_to(msg, 'note added...')
+        bot.reply_to(msg, 'note added...', disable_notification=True)
+    else:
+        bot.reply_to(msg, 'Try `/note <topic> <note to add>` to add notes', parse_mode='MarkdownV2',
+                     disable_notification=True)
 
 
 @bot.message_handler(commands=['view'])
@@ -66,9 +72,11 @@ def command_info(msg):
         bot.reply_to(msg, li[1] + ' - ' + task[li[1]])
     elif len(task) > 1:
         print(len(task))
-        bot.reply_to(msg, 'Available: ' + '\n'.join(task.keys()) + '\nMention a note to view')
+        bot.reply_to(msg, 'Available: ' + '\n'.join(task.keys()) + '\n\n Try `/view <note topic>` to view them',
+                     parse_mode='MarkdownV2', disable_notification=True)
     else:
-        bot.reply_to(msg, 'Try `/note <topic> <note to add>` to create and view notes', parse_mode='MarkdownV2')
+        bot.reply_to(msg, 'Try `/note <topic> <your note>` to add and view notes', parse_mode='MarkdownV2',
+                     disable_notification=True)
 
 
 @bot.message_handler(commands=['down'])
@@ -95,20 +103,14 @@ def down(msg):
             if i.get('format_note'):
                 bot.reply_to(msg, i['format_note'] + link, parse_mode='HTML')
             else:
-                bot.reply_to(msg, link, parse_mode='HTML')
+                bot.reply_to(msg, link, parse_mode='HTML', disable_notification=True)
     except:
-        bot.reply_to(msg, 'No Output available')
-
-
-@bot.message_handler(commands=['motivate'])
-def send_welc(message):
-    x = requests.request(url='https://api.quotable.io/random', method='get')
-    bot.reply_to(message, x.json()['content'])
+        bot.reply_to(msg, 'This can\'t be downloaded by me', disable_notification=True)
 
 
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
-    bot.reply_to(message, "HyP0 bot developer for personal usage!")
+    bot.reply_to(message, "HyP0 bot developer for personal usage!", disable_notification=True)
 
 
 @bot.message_handler(commands=['twitter'])
