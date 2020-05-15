@@ -3,7 +3,7 @@ import random
 import requests
 import json
 import youtube_dl
-import tweepy
+import tweepy,os
 from wholesome import return_pic, pre_proc
 
 ydl = youtube_dl.YoutubeDL({'outtmpl': '%(id)s%(ext)s'})
