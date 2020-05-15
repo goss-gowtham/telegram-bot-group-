@@ -44,7 +44,7 @@ def command_words(msg):
 
 
 @bot.message_handler(commands=['wholesome', 'wholesome-update'])
-  def command_info(msg):	
+def command_info(msg):	
     if len(msg.text.split('-'))>1:	
         pre_proc()
         bot.send_message(msg.chat.id,'updated..')
