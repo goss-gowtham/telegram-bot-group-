@@ -3,3 +3,4 @@ bs4
 youtube_dl
 telebot
 pyTelegramBotAPI
+tweepy
