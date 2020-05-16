@@ -104,6 +104,8 @@ def down(msg):
                 bot.reply_to(msg, i['format_note'] + link, parse_mode='HTML')
             else:
                 bot.reply_to(msg, link, parse_mode='HTML', disable_notification=True)
+        bot.delete_message(msg.chat.id, msg.message_id)
+
     except:
         bot.reply_to(msg, 'This can\'t be downloaded by me', disable_notification=True)
 
